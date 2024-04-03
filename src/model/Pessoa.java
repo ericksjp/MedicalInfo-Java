@@ -9,15 +9,18 @@
 
 package model;
 
+import enums.NivelAtividadeFisica;
+
 public class Pessoa {
   private String nome;
   private char genero;
   private int idade;
   private float altura;
   private float peso;
+  private NivelAtividadeFisica nivelAtividadeFisica;
   private Perfil perfil;
 
-  public Pessoa(String nome, char genero, int idade, float altura, float peso) {
+  public Pessoa(String nome, char genero, int idade, float altura, float peso, NivelAtividadeFisica nivelAtividadeFisica) {
     if (nome.replaceAll(" ", "").length() < 3)
       throw new IllegalArgumentException("O nome deve ter no mínimo 3 caracteres.");
     if (nome.length() > 50)
@@ -41,6 +44,7 @@ public class Pessoa {
     this.idade = idade;
     this.altura = altura;
     this.peso = peso;
+    this.nivelAtividadeFisica = nivelAtividadeFisica;
     this.perfil = new Perfil(this);
   }
 
@@ -103,6 +107,14 @@ public class Pessoa {
       throw new IllegalArgumentException("O peso deve ser um valor positivo.");
     this.peso = peso;
     perfil.atualizarPerfil(this);
+  }
+
+  public NivelAtividadeFisica getNivelAtividadeFisica() {
+    return nivelAtividadeFisica;
+  }
+
+  public void setNivelAtividadeFisica(NivelAtividadeFisica nivelAtividadeFisica) {
+    this.nivelAtividadeFisica = nivelAtividadeFisica;
   }
 
   @Override
