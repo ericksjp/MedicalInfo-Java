@@ -23,8 +23,13 @@ public abstract class HealthyCalc {
     throw new UnsupportedOperationException("Método não implementado.");
   }
 
-  public static float frequenciaCardiacaAlvo() {
-    throw new UnsupportedOperationException("Método não implementado.");
+  public static float[] frequenciaCardiacaAlvo(final char genero, final int idade) {
+    float frequenciaCardiacaMax = frequenciaCardiacaMaxima(genero, idade);
+    
+    float frequenciaCardiacaAlvoMinima = frequenciaCardiacaMax * 0.5f;
+    float frequenciaCardiacaAlvoMaxima = frequenciaCardiacaMax * 0.85f;
+
+    return new float[]{frequenciaCardiacaAlvoMinima, frequenciaCardiacaAlvoMaxima};
   }
 
   public static int frequenciaCardiacaMaxima(final char genero, final int idade) {
