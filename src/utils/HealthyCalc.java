@@ -10,7 +10,7 @@
 
 package utils;
 
-public class HealthyCalc {
+public abstract class HealthyCalc {
 
   public static float calcularIMC(final float peso, final float altura) {
     if (peso <= 0 || altura <= 0) {
