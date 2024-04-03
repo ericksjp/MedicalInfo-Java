@@ -9,15 +9,18 @@
 
 package model;
 
+import enums.NivelAtividadeFisica;
+
 public class Pessoa {
   private String nome;
   private char genero;
   private int idade;
   private float altura;
   private float peso;
+  private NivelAtividadeFisica nivelAtividadeFisica;
   private Perfil perfil;
 
-  public Pessoa(String nome, char genero, int idade, float altura, float peso) {
+  public Pessoa(String nome, char genero, int idade, float altura, float peso, NivelAtividadeFisica nivelAtividadeFisica) {
     if (nome.replaceAll(" ", "").length() < 3)
       throw new IllegalArgumentException("O nome deve ter no mínimo 3 caracteres.");
     if (nome.length() > 50)
@@ -41,6 +44,7 @@ public class Pessoa {
     this.idade = idade;
     this.altura = altura;
     this.peso = peso;
+    this.nivelAtividadeFisica = nivelAtividadeFisica;
     this.perfil = new Perfil(this);
   }
 
@@ -69,11 +73,11 @@ public class Pessoa {
     perfil.atualizarPerfil(this);
   }
 
-  public int getDataNascimento() {
+  public int getIdade() {
     return idade;
   }
 
-  public void setDataNascimento(int idade) {
+  public void setIdade(int idade) {
     if (idade < 0) {
       throw new IllegalArgumentException("A idade deve ser um valor positivo.");
     }
@@ -105,6 +109,15 @@ public class Pessoa {
     perfil.atualizarPerfil(this);
   }
 
+  public NivelAtividadeFisica getNivelAtividadeFisica() {
+    return nivelAtividadeFisica;
+  }
+
+  public void setNivelAtividadeFisica(NivelAtividadeFisica nivelAtividadeFisica) {
+    this.nivelAtividadeFisica = nivelAtividadeFisica;
+    perfil.atualizarPerfil(this);
+  }
+
   @Override
   public String toString() {
     return """
@@ -114,9 +127,8 @@ public class Pessoa {
           Gênero: %c
           Peso: %.2f
           Altura: %.2f
-        Perfil:
-          IMC: %.2
-          """.formatted(nome, idade, genero, peso, altura, perfil.getImc());
+          Nivel Ativ. Física: %s
+          """.formatted(nome, idade, genero, peso, altura, nivelAtividadeFisica);
 
   }
 }
