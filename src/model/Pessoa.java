@@ -69,11 +69,11 @@ public class Pessoa {
     perfil.atualizarPerfil(this);
   }
 
-  public int getDataNascimento() {
+  public int getIdade() {
     return idade;
   }
 
-  public void setDataNascimento(int idade) {
+  public void setIdade(int idade) {
     if (idade < 0) {
       throw new IllegalArgumentException("A idade deve ser um valor positivo.");
     }

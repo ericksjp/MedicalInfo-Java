@@ -27,8 +27,10 @@ public abstract class HealthyCalc {
     throw new UnsupportedOperationException("Método não implementado.");
   }
 
-  public static float frequenciaCardiacaMaxima() {
-    throw new UnsupportedOperationException("Método não implementado.");
+  public static int frequenciaCardiacaMaxima(final char genero, final int idade) {
+    if(genero == 'F') return 226 - idade;
+    if(genero == 'M') return 220 - idade;
+    throw new IllegalArgumentException("Gênero inválido. Use 'F' para feminino e 'M' para masculino.");
   }
 
   public static float litrosAguaDiarios() {
