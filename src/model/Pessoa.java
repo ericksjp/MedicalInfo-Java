@@ -115,6 +115,7 @@ public class Pessoa {
 
   public void setNivelAtividadeFisica(NivelAtividadeFisica nivelAtividadeFisica) {
     this.nivelAtividadeFisica = nivelAtividadeFisica;
+    perfil.atualizarPerfil(this);
   }
 
   @Override
@@ -126,9 +127,8 @@ public class Pessoa {
           Gênero: %c
           Peso: %.2f
           Altura: %.2f
-        Perfil:
-          IMC: %.2
-          """.formatted(nome, idade, genero, peso, altura, perfil.getImc());
+          Nivel Ativ. Física: %s
+          """.formatted(nome, idade, genero, peso, altura, nivelAtividadeFisica);
 
   }
 }
