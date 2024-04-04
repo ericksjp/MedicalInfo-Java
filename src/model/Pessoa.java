@@ -18,7 +18,7 @@ public class Pessoa {
   private float altura;
   private float peso;
   private NivelAtividadeFisica nivelAtividadeFisica;
-  private Perfil perfil;
+  private final Perfil perfil;
 
   public Pessoa(String nome, char genero, int idade, float altura, float peso, NivelAtividadeFisica nivelAtividadeFisica) {
     if (nome.replaceAll(" ", "").length() < 3)

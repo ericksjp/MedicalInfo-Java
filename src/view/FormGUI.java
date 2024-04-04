@@ -22,6 +22,7 @@ public class FormGUI extends JFrame {
   final private TitleComboBox genero;
   final private TitleComboBox nivelAtividadeFisica;
   final private JButton sub;
+
   public FormGUI() {
     setTitle("Form");
     setBounds(300, 90, 900, 600);
