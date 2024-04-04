@@ -20,7 +20,8 @@ public class Pessoa {
   private NivelAtividadeFisica nivelAtividadeFisica;
   private final Perfil perfil;
 
-  public Pessoa(String nome, char genero, int idade, float altura, float peso, NivelAtividadeFisica nivelAtividadeFisica) {
+  public Pessoa(String nome, char genero, int idade, float altura, float peso,
+      NivelAtividadeFisica nivelAtividadeFisica) {
     if (nome.replaceAll(" ", "").length() < 3)
       throw new IllegalArgumentException("O nome deve ter no mínimo 3 caracteres.");
     if (nome.length() > 50)
@@ -109,6 +110,10 @@ public class Pessoa {
     perfil.atualizarPerfil(this);
   }
 
+  public Perfil getPerfil() {
+    return perfil;
+  }
+
   public NivelAtividadeFisica getNivelAtividadeFisica() {
     return nivelAtividadeFisica;
   }
@@ -121,14 +126,13 @@ public class Pessoa {
   @Override
   public String toString() {
     return """
-        Pessoa:
-          Nome: %s
-          Idade: %d
-          Gênero: %c
-          Peso: %.2f
-          Altura: %.2f
-          Nivel Ativ. Física: %s
-          """.formatted(nome, idade, genero, peso, altura, nivelAtividadeFisica);
+        Nome: %s
+        Idade: %d
+        Gênero: %c
+        Peso: %.2f
+        Altura: %.2f
+        Nivel Ativ. Física: %s
+        """.formatted(nome, idade, genero, peso, altura, nivelAtividadeFisica);
 
   }
 }
