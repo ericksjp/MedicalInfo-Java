@@ -50,7 +50,7 @@ public class FormGUI extends JFrame implements ActionListener {
     nome.setBackground(Color.WHITE);
     c.add(nome);
 
-    altura = new TitleTextField("Altura (cm)", "Ex: 1,81", 10);
+    altura = new TitleTextField("Altura (cm)", "Ex: 181", 10);
     altura.setLayout(new FlowLayout(FlowLayout.LEFT));
     altura.setBounds(50, 135, 300, 55);
     altura.setBackground(Color.WHITE);
@@ -105,7 +105,9 @@ public class FormGUI extends JFrame implements ActionListener {
         Pessoa pessoa = new Pessoa((String) info[0], (char) info[1], (int) info[2], (float) info[3], (float) info[4],
             (NivelAtividadeFisica) info[5]);
 
-        // res.setText("Cadastro realizado com sucesso!");
+        System.out.println(pessoa);
+        System.out.println(pessoa.getPerfil().getImc());
+        System.out.println(pessoa.getPerfil());
         resadd.setText(displayInfo(pessoa.getPerfil()));
       } catch (Exception ex) {
         JOptionPane.showMessageDialog(this, ex.getMessage());
