@@ -10,7 +10,6 @@
 
 package utils;
 
-import enums.NivelAtividadeFisica;
 import model.Pessoa;
 
 public abstract class HealthyCalc {

@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
@@ -30,8 +29,6 @@ public class FormGUI extends JFrame implements ActionListener {
   final private TitleComboBox genero;
   final private TitleComboBox nivelAtividadeFisica;
   final private JButton sub;
-  // final private JTextArea tout;
-  // final private JLabel res;
   final private JTextArea resadd;
 
   public FormGUI() {
@@ -105,9 +102,6 @@ public class FormGUI extends JFrame implements ActionListener {
         Pessoa pessoa = new Pessoa((String) info[0], (char) info[1], (int) info[2], (float) info[3], (float) info[4],
             (NivelAtividadeFisica) info[5]);
 
-        System.out.println(pessoa);
-        System.out.println(pessoa.getPerfil().getImc());
-        System.out.println(pessoa.getPerfil());
         resadd.setText(displayInfo(pessoa.getPerfil()));
       } catch (Exception ex) {
         JOptionPane.showMessageDialog(this, ex.getMessage());
@@ -122,7 +116,7 @@ public class FormGUI extends JFrame implements ActionListener {
     if (nome.getText().length() > 40)
       throw new IllegalArgumentException("O nome deve ter no máximo 40 caracteres.");
 
-    info[0] = nome.getText();
+    info[1] = nome.getText();
 
     try {
       info[2] = Integer.parseInt(idade.getText());
