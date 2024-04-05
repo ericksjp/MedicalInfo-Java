@@ -23,7 +23,7 @@ import utils.PParser;
 import view.labels.TitleComboBox;
 import view.labels.TitleTextField;
 
-public class FormGUI extends JFrame implements ActionListener {
+public class MasterFrame extends JFrame implements ActionListener {
 
   final private Container c;
   final private TitleTextField nome;
@@ -38,7 +38,7 @@ public class FormGUI extends JFrame implements ActionListener {
   final private JButton saveTXT;
   private Pessoa pessoa;
 
-  public FormGUI() {
+  public MasterFrame() {
     setTitle("Form");
     setBounds(300, 90, 1000, 600);
     setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -138,7 +138,6 @@ public class FormGUI extends JFrame implements ActionListener {
       }
     } else if (e.getSource() == saveCSV) {
       String texto = PParser.formatPessoaPerfilToCSVType(pessoa);
-      System.out.println(texto);
       salvarDadosEmArquivo(texto);
     } else if (e.getSource() == saveTXT) {
       String texto = PParser.formatPessoaPerfilToTXTFileType(pessoa);
