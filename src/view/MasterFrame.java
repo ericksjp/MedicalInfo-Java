@@ -5,19 +5,23 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
-import model.Perfil;
+import enums.NivelAtividadeFisica;
 import model.Pessoa;
+import utils.PParser;
 import view.labels.TitleComboBox;
 import view.labels.TitleTextField;
-import enums.NivelAtividadeFisica;
 
 public class FormGUI extends JFrame implements ActionListener {
 
@@ -30,6 +34,9 @@ public class FormGUI extends JFrame implements ActionListener {
   final private TitleComboBox nivelAtividadeFisica;
   final private JButton sub;
   final private JTextArea resadd;
+  final private JButton saveCSV;
+  final private JButton saveTXT;
+  private Pessoa pessoa;
 
   public FormGUI() {
     setTitle("Form");
@@ -45,6 +52,8 @@ public class FormGUI extends JFrame implements ActionListener {
     nome.setLayout(new FlowLayout(FlowLayout.LEFT));
     nome.setBounds(50, 80, 300, 55);
     nome.setBackground(Color.WHITE);
+    nome.requestFocusInWindow();
+    nome.requestFocus();
     c.add(nome);
 
     altura = new TitleTextField("Altura (cm)", "Ex: 181", 10);
@@ -85,10 +94,28 @@ public class FormGUI extends JFrame implements ActionListener {
     sub.addActionListener(this);
     c.add(sub);
 
+    saveCSV = new JButton("SaveCSV");
+    saveCSV.setFont(new Font("Arial", Font.PLAIN, 15));
+    saveCSV.setBounds(850, 495, 100, 30);
+    saveCSV.setBackground(Color.WHITE);
+    saveCSV.addActionListener(this);
+    saveCSV.setEnabled(false);
+    c.add(saveCSV);
+
+    saveTXT = new JButton("SaveTXT");
+    saveTXT.setFont(new Font("Arial", Font.PLAIN, 15));
+    saveTXT.setBounds(735, 495, 100, 30);
+    saveTXT.setBackground(Color.WHITE);
+    saveTXT.addActionListener(this);
+    saveTXT.setEnabled(false);
+    c.add(saveTXT);
+
     resadd = new JTextArea();
     resadd.setFont(new Font("Arial", Font.PLAIN, 18));
     resadd.setBounds(450, 50, 500, 440);
     resadd.setLineWrap(true);
+    resadd.setEditable(false);
+    resadd.setFocusable(false);
     c.add(resadd);
 
     setVisible(true);
@@ -99,13 +126,23 @@ public class FormGUI extends JFrame implements ActionListener {
     if (e.getSource() == sub) {
       try {
         Object[] info = parseInfo();
-        Pessoa pessoa = new Pessoa((String) info[0], (char) info[1], (int) info[2], (float) info[3], (float) info[4],
+        pessoa = new Pessoa((String) info[0], (char) info[1], (int) info[2], (float) info[3], (float) info[4],
             (NivelAtividadeFisica) info[5]);
 
-        resadd.setText(displayInfo(pessoa.getPerfil()));
+        resadd.setFocusable(true);
+        resadd.setText("\n" + PParser.formatPerfilToTXTFileType(pessoa.getPerfil()));
+        saveCSV.setEnabled(true);
+        saveTXT.setEnabled(true);
       } catch (Exception ex) {
         JOptionPane.showMessageDialog(this, ex.getMessage());
       }
+    } else if (e.getSource() == saveCSV) {
+      String texto = PParser.formatPessoaPerfilToCSVType(pessoa);
+      System.out.println(texto);
+      salvarDadosEmArquivo(texto);
+    } else if (e.getSource() == saveTXT) {
+      String texto = PParser.formatPessoaPerfilToTXTFileType(pessoa);
+      salvarDadosEmArquivo(texto);
     }
   }
 
@@ -116,7 +153,8 @@ public class FormGUI extends JFrame implements ActionListener {
     if (nome.getText().length() > 40)
       throw new IllegalArgumentException("O nome deve ter no máximo 40 caracteres.");
 
-    info[1] = nome.getText();
+    info[0] = nome.getText();
+    info[1] = genero.getText().charAt(0);
 
     try {
       info[2] = Integer.parseInt(idade.getText());
@@ -149,27 +187,22 @@ public class FormGUI extends JFrame implements ActionListener {
       throw new IllegalArgumentException("O peso deve ser um número real.");
     }
 
-    info[1] = genero.getText().charAt(0);
     info[5] = NivelAtividadeFisica.getNivelAtividadeFisica(nivelAtividadeFisica.getText());
 
     return info;
   }
 
-  public String displayInfo(Perfil perfil) {
-    return """
-
-        \s\s\sIMC: %.2f\n
-        \s\s\sClassificação IMC: %s\n
-        \s\s\sFrequência Cardíaca Alvo: %.2f - %.2f\n
-        \s\s\sFrequência Cardíaca Máxima: %.2f\n
-        \s\s\sTaxa Metabólica Basal: %.2f\n
-        \s\s\sConsumo Diário de Água Recomendado: %.2fL\n
-        \s\s\sTaxa de Gordura: %.2f\n
-        \s\s\s----------------------------------------------------------------
-        \s\s\sData de avaliação: %s
-        """.formatted(perfil.getImc(), perfil.classificacaoIMC(), perfil.frequenciaCardiacaAlvo()[0],
-        perfil.frequenciaCardiacaAlvo()[1],
-        perfil.frequenciaCardiacaMaxima(), perfil.taxaMetabolicaBasal(), perfil.consumoDiarioAgua(),
-        perfil.taxaGordura(), perfil.getGeradoEm());
+  private void salvarDadosEmArquivo(String texto) {
+    JFileChooser fileChooser = new JFileChooser();
+    int result = fileChooser.showSaveDialog(this);
+    if (result == JFileChooser.APPROVE_OPTION) {
+      File file = fileChooser.getSelectedFile();
+      try (PrintWriter writer = new PrintWriter(file)) {
+        writer.println(texto);
+        JOptionPane.showMessageDialog(this, "Dados salvos com sucesso em " + file.getAbsolutePath());
+      } catch (IOException ex) {
+        JOptionPane.showMessageDialog(this, "Erro ao salvar o arquivo: " + ex.getMessage());
+      }
+    }
   }
 }
